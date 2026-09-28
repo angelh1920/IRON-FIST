@@ -22,6 +22,7 @@ class JuegoNivel3 {
             tiempo: document.getElementById("Tiempolvl3"),
             puntaje: document.getElementById("Puntajelvl3"),
             btnPausa: document.getElementById("Pauselvl3"),
+            textoPausa: document.getElementById("TextoPausalvl3"),
             btnPlay: document.getElementById("Playlvl3"),
             pantallaStart: document.getElementById("Startlvl3"),
             pantallaPausa: document.getElementById("Pausa_Pantallalvl3"),
@@ -129,6 +130,8 @@ class JuegoNivel3 {
         this.tiempo = this.TIEMPO_INICIAL;
         this.puntaje = 0;
         this.actualizarHUD();
+        if (this.dom.btnPausa) this.dom.btnPausa.classList.remove("PausadoLvl3");
+        if (this.dom.textoPausa) this.dom.textoPausa.textContent = "⏸ PAUSA";
 
         // Restablecer posición de meteoritos
         this.dom.meteoritos.forEach(m => {
@@ -191,6 +194,7 @@ class JuegoNivel3 {
 
         this.puntaje++;
         this.actualizarHUD();
+        this.animarPuntaje(meteorito);
 
         if (this.puntaje >= this.PUNTAJE_OBJETIVO) {
             this.procesarVictoria();
@@ -209,6 +213,33 @@ class JuegoNivel3 {
     actualizarHUD() {
         if (this.dom.tiempo) this.dom.tiempo.innerHTML = this.tiempo;
         if (this.dom.puntaje) this.dom.puntaje.innerHTML = `${this.puntaje} / ${this.PUNTAJE_OBJETIVO}`;
+        if (this.dom.tiempo) this.dom.tiempo.classList.toggle("TiempoUrgentelvl3", this.tiempo <= 15);
+    }
+
+    animarPuntaje(meteorito) {
+        const puntaje = this.dom.puntaje;
+        if (!puntaje) return;
+        puntaje.classList.remove("PuntajePoplvl3");
+        void puntaje.offsetWidth;
+        puntaje.classList.add("PuntajePoplvl3");
+        const contenedor = puntaje.closest(".Puntajelvl3");
+        if (contenedor) {
+            contenedor.classList.remove("DestelloPuntajelvl3");
+            void contenedor.offsetWidth;
+            contenedor.classList.add("DestelloPuntajelvl3");
+        }
+
+        const destello = meteorito && document.getElementById(`Destellolvl3_${meteorito.id}`);
+        if (destello) {
+            const juego = meteorito.closest(".Contenedorlvl3");
+            const cajaJuego = juego.getBoundingClientRect();
+            const cajaMeteorito = meteorito.getBoundingClientRect();
+            destello.style.left = `${cajaMeteorito.left - cajaJuego.left + cajaMeteorito.width / 2}px`;
+            destello.style.top = `${cajaMeteorito.top - cajaJuego.top + cajaMeteorito.height / 2}px`;
+            destello.classList.remove("DestelloActivolvl3");
+            void destello.offsetWidth;
+            destello.classList.add("DestelloActivolvl3");
+        }
     }
 
     togglePausa() {
@@ -218,11 +249,14 @@ class JuegoNivel3 {
 
         if (this.pausado) {
             this.dom.pantallaPausa.style.display = "flex";
+            if (this.dom.textoPausa) this.dom.textoPausa.textContent = "▶ REANUDAR";
+            if (this.dom.btnPausa) this.dom.btnPausa.classList.add("PausadoLvl3");
             if (this.dom.audios.fondo) this.dom.audios.fondo.pause();
             if (this.dom.planeta) this.dom.planeta.classList.add("pausado");
 
             // Congelar meteoritos
             this.dom.meteoritos.forEach(m => {
+                m.classList.add("animacionPausadalvl3");
                 const currentLeft = window.getComputedStyle(m).left;
                 const currentTop = window.getComputedStyle(m).top;
                 m.style.left = currentLeft;
@@ -231,6 +265,9 @@ class JuegoNivel3 {
             });
         } else {
             this.dom.pantallaPausa.style.display = "none";
+            if (this.dom.textoPausa) this.dom.textoPausa.textContent = "⏸ PAUSA";
+            if (this.dom.btnPausa) this.dom.btnPausa.classList.remove("PausadoLvl3");
+            this.dom.meteoritos.forEach(m => m.classList.remove("animacionPausadalvl3"));
             this.reproducirAudio(this.dom.audios.fondo);
             if (this.dom.planeta) this.dom.planeta.classList.remove("pausado");
         }
@@ -254,6 +291,8 @@ class JuegoNivel3 {
         this.activo = false;
         this.pausado = false;
         this.actualizarHUD();
+        if (this.dom.btnPausa) this.dom.btnPausa.classList.remove("PausadoLvl3");
+        if (this.dom.textoPausa) this.dom.textoPausa.textContent = "⏸ PAUSA";
 
         // Ocultar pantalla de pausa si quedó abierta
         if (this.dom.pantallaPausa) this.dom.pantallaPausa.style.display = "none";
@@ -261,6 +300,7 @@ class JuegoNivel3 {
         // Resetear meteoritos fuera de pantalla
         this.dom.meteoritos.forEach(m => {
             if (m) {
+                m.classList.remove("animacionPausadalvl3");
                 m.style.display = "block";
                 m.style.left = "-200px";
                 m.style.top = "-100px";
