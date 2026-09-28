@@ -18,9 +18,9 @@ Swal.fire({
 
 
 
-Tiempo = 71 //VARIBLE DE INICIO TIEMPO
+Tiempo = 20 //VARIBLE DE INICIO TIEMPO
 Puntaje = 0 //VARIABLE DE INICIO PUNTOS
-
+Juego_Terminado = false
 
 
 //FUNCION DE NARRACIONES
@@ -75,15 +75,38 @@ Graficos = 1
 function JUEGO(){
 
     function Tiempo_Disminur(){ //FUNCION QUE REDUCE EL TIEMPO Y RESETEAL EL RESULTADO UNA VEZ LLEGUE A 0
+        if(Juego_Terminado){return;}
         Tiempo--;
         document.getElementById("Tiempo").innerHTML = Tiempo
-        if(Tiempo == 0){
-            Tiempo = 71
-            Puntaje = 0
-            document.getElementById("Perdiste_sound").play()
-            alert("Lo lamento perdiste")} }
 
-    
+        if(Tiempo <= 15){
+        document.getElementById("Tiempo").classList.add("Tiempo_Urgente") }
+
+        if(Tiempo == 0){
+        Tiempo = 20
+        Puntaje = 0
+        Juego_Terminado = true
+        document.getElementById("Tiempo").classList.remove("Tiempo_Urgente")
+        document.getElementById("Perdiste_sound").play()
+        document.getElementById("PERDISTE_PANTALLA").style.display = "flex"
+
+        Swal.fire({
+                title : 'GAME OVER',
+                html: 'Lamentablemente no lograste detener los meteoritos a tiempo. No te rindas, intentalo de nuevo y salva la Tierra.',
+                icon: 'error',
+                confirmButtonText: 'INTENTAR DE NUEVO',
+                width: '50%',
+                height: '80%',
+                allowOutsideClick: true,
+                allowEscapeKey: false,
+                allowEnterkey: false,
+                stopKeydownPropagation: false,
+            }).then(function(){
+                Juego_Terminado = false
+                document.getElementById("PERDISTE_PANTALLA").style.display = "none"
+            });
+        } }
+        
         Restar_Tiempo = setInterval(Tiempo_Disminur, 1000)
 
         //AÑADIMOS LA FUNCION AUMENTAR PUNTOS AL PASAR EL CURSOR SOBRE LOS METIORITOS
@@ -94,18 +117,23 @@ function JUEGO(){
         //FUNCION QUE UNICAMENTE AUMENTA PUNTOS Y RESETEA LAS VARIABLES AL LLEGAR A CIERTO LIMITE
         function Aumentar_Puntos(){
             Puntaje++;
-            document.getElementById("Puntaje").innerHTML = Puntaje + "&nbsp;/&nbsp;5"
-            if(Puntaje == 5){
+            document.getElementById("Puntaje").innerHTML = Puntaje + "&nbsp;/&nbsp;15"
+            var SpanPuntaje = document.getElementById("Puntaje")
+            SpanPuntaje.classList.remove("Puntaje_Pop")
+            void SpanPuntaje.offsetWidth
+            SpanPuntaje.classList.add("Puntaje_Pop")
+            
+            if(Puntaje == 15){
                 Puntaje = 0 
-                Tiempo = 71
+                Tiempo = 20
 
 
                 document.getElementById("NEXT").addEventListener('click', Habilitar_Siguienten_LVL)
                 function Habilitar_Siguienten_LVL(){
                 document.getElementById("NIVEL_01").style.display = "none"
                 document.getElementById("NIVEL_02").style.display = "block"}
-                document.getElementById("Tiempo").innerHTML = 70
-                document.getElementById("Puntaje").innerHTML = 0+"&nbsp;/&nbsp;"+27
+                document.getElementById("Tiempo").innerHTML = 19
+                document.getElementById("Puntaje").innerHTML = 0+"&nbsp;/&nbsp;"+15
                 document.getElementById("Triunfo").play()
                 document.getElementById("Fondo_Ciberpunk").pause()
                 document.getElementById("Puntos_sound").pause()
@@ -151,25 +179,33 @@ function JUEGO(){
 
         //ESTA FUNCION DIRIGE AL PRIMER METIORITO 1 A LA TIERRA 
         function Metiorito_Direccion(){
-            Distancia1 = 80
+            if(Juego_Terminado){return;}
+            Distancia1 = Math.round(Math.random()* 18) + 70
             Altura1 = Math.round(Math.random()* 450)
+            Tamano1 = Math.round(Math.random()* 40) + 50
 
             document.getElementById("Meteiorito").style.left = Distancia1 + "%"
-            document.getElementById("Meteiorito").style.top = Altura1 + "px"}
+            document.getElementById("Meteiorito").style.top = Altura1 + "px"
+            document.getElementById("Meteiorito").style.width = Tamano1 + "px"
+            document.getElementById("Meteiorito").style.height = Tamano1 + "px"}
 
-            setTimeout(Metiorito_Direccion, 2000)//PRIMERO VA A SER EJECUTADO A LOS DOS PRIMEROS SEGUNDOS
+            Inicio_trayectoria = setTimeout(Metiorito_Direccion, 2000)//PRIMERO VA A SER EJECUTADO A LOS DOS PRIMEROS SEGUNDOS
             Reanudar_trayectoria = setInterval(Metiorito_Direccion, 2430)//LUEGO SE VA A LLAMAR A LOS METIORITOS CADA 2,4 SEGUNDOS
 
 
         //ESTA FUNCION DIRIGE AL PRIMER METIORITO 2 A LA TIERRA         
         function Metiorito_Direccion2(){
-            Distancia2 = 80
+            if(Juego_Terminado){return;}
+            Distancia2 = Math.round(Math.random()* 18) + 70
             Altura2 = Math.round(Math.random()* 450)
+            Tamano2 = Math.round(Math.random()* 40) + 50
 
             document.getElementById("Meteiorito2").style.left = Distancia2 + "%"
-            document.getElementById("Meteiorito2").style.top = Altura2 + "px"}
+            document.getElementById("Meteiorito2").style.top = Altura2 + "px"
+            document.getElementById("Meteiorito2").style.width = Tamano2 + "px"
+            document.getElementById("Meteiorito2").style.height = Tamano2 + "px"}
 
-            setTimeout(Metiorito_Direccion2, 2600)//PRIMERO VA A SER EJECUTADO A LOS DOS PRIMEROS SEGUNDOS
+            Inicio_trayectoria2 = setTimeout(Metiorito_Direccion2, 2600)//PRIMERO VA A SER EJECUTADO A LOS DOS PRIMEROS SEGUNDOS
             Reanudar_trayectoria2 = setInterval(Metiorito_Direccion2, 2350)//LUEGO SE VA A LLAMAR A LOS METIORITOS CADA 2,3 SEGUNDOS
 
 
@@ -181,6 +217,14 @@ function JUEGO(){
         //ESTA ES LA FUNCION QUE EXPULSA AL METIRITO 1 DE MANERA ALEATORIA FUERA DEL MAPA
         function Explulsar (){
             document.getElementById("Puntos_sound").play()
+
+            var Destello1 = document.getElementById("Destello1")
+            Destello1.style.left = document.getElementById("Meteiorito").offsetLeft + "px"
+            Destello1.style.top = document.getElementById("Meteiorito").offsetTop + "px"
+            Destello1.classList.remove("Destello_Activo")
+            void Destello1.offsetWidth
+            Destello1.classList.add("Destello_Activo")
+
             Distancia = "-500"
             Altura = Math.round(Math.random()* 450)
 
@@ -192,6 +236,14 @@ function JUEGO(){
         //ESTA ES LA FUNCION QUE EXPULSA AL METIRITO 2 DE MANERA ALEATORIA FUERA DEL MAPA
         function Explulsar2 (){
             document.getElementById("Punto2").play()
+
+            var Destello2 = document.getElementById("Destello2")
+            Destello2.style.left = document.getElementById("Meteiorito2").offsetLeft + "px"
+            Destello2.style.top = document.getElementById("Meteiorito2").offsetTop + "px"
+            Destello2.classList.remove("Destello_Activo")
+            void Destello2.offsetWidth
+            Destello2.classList.add("Destello_Activo")
+
             Distancia = "-500"
             Altura = Math.round(Math.random()* 450)
     
@@ -206,26 +258,45 @@ function JUEGO(){
         //ESTA FUNCION SE ENCARGA DE ALERTARTE UNA VEZ EL METIORITO CRUZE LA LINEA CON UN PERDISTE
         //TAMBIEN RESETEA LOS VALORES Y LLEVA A LOS METIORITOS FUERA DEL MAPA DE MANERA INSTANTANEA
         function perdiste (){
+            if(Juego_Terminado){return;}
             if((document.getElementById("Meteiorito").offsetLeft > 630) ||
             (document.getElementById("Meteiorito2").offsetLeft > 630)) {
 
                 document.getElementById("Perdiste_sound").play()
-                alert("YA ES DEMASIADO TARDE, LOS METEORITOS DESTRUYERON GRAN PARTE DEL CONTINENTE Y LO MEJOR ES ESPERAR LO PEOR")
+                document.getElementById("Tiempo").classList.remove("Tiempo_Urgente")
+                Juego_Terminado = true
+                document.getElementById("PERDISTE_PANTALLA").style.display = "flex"
+
+                Swal.fire({
+                    title : 'GAME OVER',
+                    html: 'Ya es demasiado tarde, los meteoritos destruyeron gran parte del continente. No te rindas, intentalo de nuevo y salva la Tierra.',
+                    icon: 'error',
+                    confirmButtonText: 'INTENTAR DE NUEVO',
+                    width: '50%',
+                    height: '80%',
+                    allowOutsideClick: true,
+                    allowEscapeKey: false,
+                    allowEnterkey: false,
+                    stopKeydownPropagation: false,
+                }).then(function(){
+                    Juego_Terminado = false
+                    document.getElementById("PERDISTE_PANTALLA").style.display = "none"
+                });
+                
                 document.getElementById("Meteiorito").style.left = "-70%"
                 document.getElementById("Meteiorito").style.transition = "0s"
 
                 document.getElementById("Meteiorito2").style.left = "-70%"
                 document.getElementById("Meteiorito2").style.transition = "0s"
                 
-                Tiempo = 71
+                Tiempo = 20
                 Puntaje = 0 }
         
             else {
                 document.getElementById("Meteiorito").style.transition = "2.4s"
                 document.getElementById("Meteiorito2").style.transition = "2.4s"} }
 
-        setInterval(perdiste, 1)//LE COLOCAMOS UNO PARA QUE SIEMPRE SE ESTE EJECUTANDO, DADO A 
-        //QUE NO SABEMOS CUANDO EL METIORITO VA A SUPERAR EL LIMITE
+        Chequeo_Perdiste = setInterval(perdiste, 1)
         }
 
         
@@ -277,12 +348,17 @@ function JUEGO(){
                         //SI LLEGA A UNA EJECUTA LA FUNCION PAUSE
                         if (Activo == 1){
                         
+                        document.getElementById("Pause").classList.add("Pause_En_Pausa")
+                        document.getElementById("Pause_Texto").innerHTML = "▶ REANUDAR"    
                         document.getElementById("Fondo_Ciberpunk").pause()
                         document.getElementById("Pausa_Pantalla").style.display = "table"
                         clearInterval(Restar_Tiempo)//BORRAMOS LA FUNCION DE TIEMPO
                         document.getElementById("Tiempo").innerHTML = Tiempo
                         clearInterval(Reanudar_trayectoria2)
                         clearInterval(Reanudar_trayectoria)
+                        clearTimeout(Inicio_trayectoria)
+                        clearTimeout(Inicio_trayectoria2)
+                        clearInterval(Chequeo_Perdiste)
 
                             function Metiorito_detener (){   
                             document.getElementById("Meteiorito").style.left = document.getElementById("Meteiorito").offsetLeft + "px" 
@@ -296,61 +372,133 @@ function JUEGO(){
 
                         else { //LA FUNCION DE REANUDAR
                             clearInterval(Pusae_offf) //BORRAMOS LA FUNCION, PARA QUE EL REANUDAR PUEDA EJECUTARSE DE NUEVO
+                            document.getElementById("Pause").classList.remove("Pause_En_Pausa")
+                            document.getElementById("Pause_Texto").innerHTML = "⏸ PAUSA"
                             document.getElementById("Pausa_Pantalla").style.display = "none"
                             document.getElementById("Fondo_Ciberpunk").play()
                             function Tiempo_Disminur(){//VOLVEMOS A CREAR LA FUNCION DE TIEMPO PARA QUE REANUEDE EL CONTEO
+                                if(Juego_Terminado){return;}
                                 Tiempo--;
                                 document.getElementById("Tiempo").innerHTML = Tiempo
+
+                                if(Tiempo <= 15){
+                                    document.getElementById("Tiempo").classList.add("Tiempo_Urgente")
+                                }
+
                                 if(Tiempo == 0){
-                                    Tiempo = 71
+                                    Tiempo = 20
                                     Puntaje = 0
-                                document.getElementById("Perdiste_sound").play()    
-                                alert("Lo lamento perdiste")
-                                document.getElementById("Meteiorito").style.left = "-70%"
-                                document.getElementById("Meteiorito").style.transition = "0s" //CREAR UNA FUNCION EN BASE A ESTO Y PASAR COMO REANUDAR EN GANASTE
-                
-                                document.getElementById("Meteiorito2").style.left = "-70%"
-                                document.getElementById("Meteiorito2").style.transition = "0s"}
+                                    Juego_Terminado = true
+                                    document.getElementById("Tiempo").classList.remove("Tiempo_Urgente")
+                                    document.getElementById("Perdiste_sound").play()
+                                    document.getElementById("PERDISTE_PANTALLA").style.display = "flex"
+
+                                    Swal.fire({
+                                        title : 'GAME OVER',
+                                        html: 'Lamentablemente no lograste detener los meteoritos a tiempo. No te rindas, intentalo de nuevo y salva la Tierra.',
+                                        icon: 'error',
+                                        confirmButtonText: 'INTENTAR DE NUEVO',
+                                        width: '50%',
+                                        height: '80%',
+                                        allowOutsideClick: true,
+                                        allowEscapeKey: false,
+                                        allowEnterkey: false,
+                                        stopKeydownPropagation: false,
+                                    }).then(function(){
+                                        Juego_Terminado = false
+                                        document.getElementById("PERDISTE_PANTALLA").style.display = "none"
+                                    });
                                 
+                                    document.getElementById("Meteiorito").style.left = "-70%"
+                                    document.getElementById("Meteiorito").style.transition = "0s" //CREAR UNA FUNCION EN BASE A ESTO Y PASAR COMO REANUDAR EN GANASTE
+                                    document.getElementById("Meteiorito2").style.left = "-70%"
+                                    document.getElementById("Meteiorito2").style.transition = "0s"
+                                    document.getElementById("Meteiorito").style.transition = "2.4s"
+                                    document.getElementById("Meteiorito2").style.transition = "2.4s"
+                                }
+
                                 else{
                                     document.getElementById("Meteiorito").style.transition = "2.4s"
-                                    document.getElementById("Meteiorito2").style.transition = "2.4s"}}
+                                    document.getElementById("Meteiorito2").style.transition = "2.4s"
+                                }
+                            }
 
                         Restar_Tiempo = setInterval(Tiempo_Disminur, 1000)
         
-                        document.getElementById("Meteiorito").style.left = Distancia1 + "%"
-                        document.getElementById("Meteiorito").style.top = Altura1 + "px"
                         document.getElementById("Meteiorito").style.transition = "2.4s"
-
-                        document.getElementById("Meteiorito2").style.left = Distancia2 + "%"
-                        document.getElementById("Meteiorito2").style.top = Altura2 + "px"
                         document.getElementById("Meteiorito2").style.transition = "2.4s"
 
                         
                         function Metiorito_Direccion(){
-                            Distancia1 = 80
+                            if(Juego_Terminado){return;}
+                            Distancia1 = Math.round(Math.random()* 18) + 70
                             Altura1 = Math.round(Math.random()* 450)
+                            Tamano1 = Math.round(Math.random()* 40) + 50
                 
                             document.getElementById("Meteiorito").style.left = Distancia1 + "%"
-                            document.getElementById("Meteiorito").style.top = Altura1 + "px"}
+                            document.getElementById("Meteiorito").style.top = Altura1 + "px"
+                            document.getElementById("Meteiorito").style.width = Tamano1 + "px"
+                            document.getElementById("Meteiorito").style.height = Tamano1 + "px"}
                 
-                            setTimeout(Metiorito_Direccion, 2000)//PRIMERO VA A SER EJECUTADO A LOS DOS PRIMEROS SEGUNDOS
+                            Metiorito_Direccion() //Al reanudar, el meteorito vuelve a moverse de inmediato
                             Reanudar_trayectoria = setInterval(Metiorito_Direccion, 2430)//LUEGO SE VA A LLAMAR A LOS METIORITOS CADA 2,4 SEGUNDOS
                 
                 
                         //ESTA FUNCION DIRIGE AL PRIMER METIORITO 2 A LA TIERRA         
                         function Metiorito_Direccion2(){
-                            Distancia2 = 80
+                            if(Juego_Terminado){return;}
+                            Distancia2 = Math.round(Math.random()* 18) + 70
                             Altura2 = Math.round(Math.random()* 450)
+                            Tamano2 = Math.round(Math.random()* 40) + 50
                 
                             document.getElementById("Meteiorito2").style.left = Distancia2 + "%"
-                            document.getElementById("Meteiorito2").style.top = Altura2 + "px"}
+                            document.getElementById("Meteiorito2").style.top = Altura2 + "px"
+                            document.getElementById("Meteiorito2").style.width = Tamano2 + "px"
+                            document.getElementById("Meteiorito2").style.height = Tamano2 + "px"}
                 
-                            setTimeout(Metiorito_Direccion2, 2000)//PRIMERO VA A SER EJECUTADO A LOS DOS PRIMEROS SEGUNDOS
+                            Metiorito_Direccion2() //Al reanudar, el meteorito vuelve a moverse de inmediato
                             Reanudar_trayectoria2 = setInterval(Metiorito_Direccion2, 2350)//LUEGO SE VA A LLAMAR A LOS METIORITOS CADA 2,3 SEGUNDOS
+                        
+                        function perdiste (){
+                            if(Juego_Terminado){return;}
+                            if((document.getElementById("Meteiorito").offsetLeft > 630) ||
+                            (document.getElementById("Meteiorito2").offsetLeft > 630)) {
 
+                                document.getElementById("Perdiste_sound").play()
+                                document.getElementById("Tiempo").classList.remove("Tiempo_Urgente")
+                                Juego_Terminado = true
+                                document.getElementById("PERDISTE_PANTALLA").style.display = "flex"
 
+                                Swal.fire({
+                                    title : 'GAME OVER',
+                                    html: 'Ya es demasiado tarde, los meteoritos destruyeron gran parte del continente. No te rindas, intentalo de nuevo y salva la Tierra.',
+                                    icon: 'error',
+                                    confirmButtonText: 'INTENTAR DE NUEVO',
+                                    width: '50%',
+                                    height: '80%',
+                                    allowOutsideClick: true,
+                                    allowEscapeKey: false,
+                                    allowEnterkey: false,
+                                    stopKeydownPropagation: false,
+                                }).then(function(){
+                                    Juego_Terminado = false
+                                    document.getElementById("PERDISTE_PANTALLA").style.display = "none"
+                                });
 
+                                document.getElementById("Meteiorito").style.left = "-70%"
+                                document.getElementById("Meteiorito").style.transition = "0s"
+
+                                document.getElementById("Meteiorito2").style.left = "-70%"
+                                document.getElementById("Meteiorito2").style.transition = "0s"
+
+                                Tiempo = 20
+                                Puntaje = 0 }
+
+                            else {
+                                document.getElementById("Meteiorito").style.transition = "2.4s"
+                                document.getElementById("Meteiorito2").style.transition = "2.4s"} }
+
+                        Chequeo_Perdiste = setInterval(perdiste, 1)    
 
 
                         Activo = 1} } } //CAMBIAMOS EL VALOR DE NUEVO A 1 PARA QUE AL SIGUIENTE CLICK SE EJECUTE EL PAUSE  S
@@ -514,4 +662,4 @@ function Reloj_Tiempo(){
 
 Reloj_Tiempo()
 
-setInterval(Reloj_Tiempo, 1000)
+setInterval(Reloj_Tiempo, 1000) 
