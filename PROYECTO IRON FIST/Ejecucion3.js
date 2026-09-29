@@ -384,9 +384,11 @@ class JuegoNivel3 {
                     <b>Sabíamos que lo lograrías. Nos salvaste de la destrucción, pero ahora nos espera otra lucha. Esperamos verte jugando IRON FIST 2 en el futuro.</b><br><br>
                     <hr>
                     <b>CONTACTOS DE DESARROLLO:</b><br>
-                    71727432@certus.edu.pe<br>
-                    71663265@certus.edu.pe<br>
-                    70845813@certus.edu.pe
+                    73660489@certus.edu.pe<br>
+                    78321864@certus.edu.pe<br>
+                    70851660@certus.edu.pe<br>
+                    61235647@certus.edu.pe<br>
+                    70515673@Certus.edu.pe<br>
                 </div>
             `,
             icon: 'success',
