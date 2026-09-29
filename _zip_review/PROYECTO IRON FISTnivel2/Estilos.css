@@ -182,97 +182,18 @@ position: absolute; top: 20%; overflow: hidden; transition: 2.3s;}
     .GANASTE_PANTALLA h3 {text-align: center; padding-left: 10%; padding-right: 10%; color: rgb(0, 0, 0);
     font-family: 'Press Start 2P', cursive;}
     
-    .PERDISTE_PANTALLA {position: absolute; width: 100%; height: 100%; background: rgba(255, 47, 47, 0.63);
-    z-index: 900; top: 0%; display: flex; justify-content: center; align-items: center; flex-direction: column; display: none;}
-
-    .PERDISTE_PANTALLA h1 {font-family: 'Press Start 2P', cursive; color: rgb(90, 10, 10);
-    text-align: center; font-size: 2rem;}
-
-    .PERDISTE_PANTALLA h3 {text-align: center; padding-left: 10%; padding-right: 10%; color: rgb(0, 0, 0);
-    font-family: 'Press Start 2P', cursive;}
-
     #Sin_Audio {display: none; font-size: 20px; color: white;}
 
     #Ganaste_audio {font-size: 20px; color: white;}
 
     /*ESTILOS GENERALES DE LOS METIORITOS*/
     .Meteiorito {cursor: pointer; display: table; 
-    position: absolute; z-index: 1000; 
-    transform-origin: center center; }
+    position: absolute; z-index: 1000; }
     
     /*ESTILOS INDIVIDUALES DE MIS DOS METIORITOS*/
-    #Meteiorito{position: absolute; top: 0px; left: -10%;  transition: 2.4s;
-    animation: Girar_Meteorito 2.6s linear infinite, Fuego_Pulso 0.5s ease-in-out infinite alternate;}
-    #Meteiorito2{position: absolute; top: 0px; left: -10%; transition: 2.4s;
-    animation: Girar_Meteorito 3.1s linear infinite, Fuego_Pulso 0.6s ease-in-out infinite alternate;}
-
-    /*Rotacion horaria para el primer meteorito*/
-@keyframes Girar_Meteorito {
-  0%   {transform: rotate(0deg);}
-  100% {transform: rotate(360deg);}
-}
-
-/*Rotacion antihoraria para el segundo meteorito, asi no giran identicos*/
-@keyframes Girar_Meteorito_Inverso {
-  0%   {transform: rotate(360deg);}
-  100% {transform: rotate(0deg);}
-}
-
-@keyframes Fuego_Pulso {
-  0% {
-    filter: drop-shadow(0 0 4px #ff4500) drop-shadow(0 0 8px #ff8800);
-  }
-  100% {
-    filter: drop-shadow(0 0 10px #ff6600) drop-shadow(0 0 22px #ffaa00);
-  }
-}
+    #Meteiorito{position: absolute; top: 0px; left: -10%;  transition: 2.4s;}
+    #Meteiorito2{position: absolute; top: 0px; left: -10%; transition: 2.4s;}
     
-.Destello_Impacto {
-    position: absolute;
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 1500;
-    background: radial-gradient(circle, #fff7cc 0%, #ffcc00 35%, #ff6600 65%, rgba(255,102,0,0) 75%);
-    opacity: 0;
-    transform: scale(0.3);
-}
-
-.Destello_Activo {
-    animation: Destello_Pop 0.4s ease-out;
-}
-
-@keyframes Destello_Pop {
-    0%   { opacity: 1;   transform: scale(0.3); }
-    60%  { opacity: 0.9; transform: scale(1.4); }
-    100% { opacity: 0;   transform: scale(1.8); }
-}
-
-#Puntaje {
-    display: inline-block;
-}
-
-.Puntaje_Pop {
-    animation: Puntaje_Pop_Anim 0.35s ease-out;
-}
-
-@keyframes Puntaje_Pop_Anim {
-    0%   { transform: scale(1);    color: #ffffff; }
-    40%  { transform: scale(1.6);  color: #ffd700; }
-    100% { transform: scale(1);    color: #ffffff; }
-}
-
-.Tiempo_Urgente {
-    color: #ff2222;
-    animation: Tiempo_Parpadeo 0.6s ease-in-out infinite alternate;
-}
-
-@keyframes Tiempo_Parpadeo {
-    0%   { opacity: 1;   transform: scale(1); }
-    100% { opacity: 0.5; transform: scale(1.2); }
-}
-
     /*ESTILO DEL PLANETA*/
     .Planeta {position: absolute; top: 12%; left: 80%;
         animation-name: rotation;
@@ -313,8 +234,6 @@ position: absolute; top: 20%; overflow: hidden; transition: 2.3s;}
     align-items: center; justify-content: center;
     color: white; cursor: pointer; position: relative;
     left: 50%; }
-
-    .Pause_En_Pausa {background: #ff8800;}
     
     /*MENSAJE DENTRO DE PAUSE*/
     .Mensaje_Pause{font-size: 50px; color: white;
@@ -598,62 +517,6 @@ margin-left: 12%; }
         position: absolute;
         top: 0%;
         z-index: 1000;
-        transform-origin: center;
-        animation: GirarMeteoritolvl3 2.8s linear infinite, FuegoMeteoritolvl3 0.55s ease-in-out infinite alternate;
-    }
-
-    @keyframes GirarMeteoritolvl3 {
-        to { transform: rotate(360deg); }
-    }
-
-    @keyframes FuegoMeteoritolvl3 {
-        from { filter: drop-shadow(0 0 4px #ff4500) drop-shadow(0 0 8px #ff8800); }
-        to { filter: drop-shadow(0 0 10px #ff6600) drop-shadow(0 0 22px #ffaa00); }
-    }
-
-    .Meteoritolvl3.animacionPausadalvl3 { animation-play-state: paused; }
-
-    .DestelloImpactolvl3 {
-        position: absolute;
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 1500;
-        background: radial-gradient(circle, #fff7cc 0%, #ffcc00 35%, #ff6600 65%, transparent 75%);
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(.3);
-    }
-
-    .DestelloActivolvl3 { animation: DestelloPoplvl3 .4s ease-out; }
-
-    @keyframes DestelloPoplvl3 {
-        0% { opacity: 1; transform: translate(-50%, -50%) scale(.3); }
-        60% { opacity: .9; transform: translate(-50%, -50%) scale(1.4); }
-        100% { opacity: 0; transform: translate(-50%, -50%) scale(1.8); }
-    }
-
-    .PuntajePoplvl3 { animation: PuntajePopAnimlvl3 .35s ease-out; }
-
-    @keyframes PuntajePopAnimlvl3 {
-        0% { transform: scale(1); color: #fff; }
-        40% { transform: scale(1.6); color: #ffd700; }
-        100% { transform: scale(1); color: #fff; }
-    }
-
-    .DestelloPuntajelvl3 { animation: DestelloPuntajelvl3 .45s ease-out; }
-
-    @keyframes DestelloPuntajelvl3 {
-        40% { color: #ffd700; text-shadow: 0 0 12px #ffd700, 0 0 24px #ff9900; }
-    }
-
-    .TiempoUrgentelvl3 {
-        color: #ff2222 !important;
-        animation: TiempoParpadeolvl3 .6s ease-in-out infinite alternate;
-    }
-
-    @keyframes TiempoParpadeolvl3 {
-        to { opacity: .5; transform: scale(1.2); }
     }
     
     /*ESTILOS INDIVIDUALES DE MIS TRES METIORITOS*/
@@ -694,10 +557,6 @@ margin-left: 12%; }
         animation-duration: 10s;
         animation-iteration-count: infinite;
         animation-timing-function: linear;
-    }
-
-    .Planetalvl3.pausado{
-        animation-play-state: paused;
     }
     
     @keyframes rotation {
@@ -857,8 +716,6 @@ margin-left: 12%; }
         top: 15%;
         left: 50%;
     }
-
-    .Pauselvl3.PausadoLvl3 { background: #ff8800; }
     
     /*MENSAJE DENTRO DE PAUSE*/
     .Mensaje_Pauselvl3{
@@ -918,4 +775,3 @@ margin-left: 12%; }
 .Reintentarlvl2 {background: rgb(0, 119, 255); color: white; border: none; cursor: pointer;
     padding: 14px 28px; font-size: 14px; font-family: 'Press Start 2P', cursive;}
 .Reintentarlvl2:hover {background: rgb(60, 150, 255);}
-
