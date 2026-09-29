@@ -72,6 +72,11 @@ Graficos = 1
 //CONTENEDOR QUE CONTEIENE TOO EL JUEGO
 //DE POR SI ESTA FUNCION NO SE EJECUTA HASTA QUE SE LA LLAMA, MAS ADELANTE LA LLAMAREMOS
 //PARA QUE EL JUEGO INICIE UNA VEZ SE PRESIONE JUGAR
+function Duracion_Meteoritos_Nivel1(){
+    var progreso = Math.min((Number(window.Puntaje) || 0) / 15, 1)
+    return Math.max(1.3, 2.4 - progreso * 1.1).toFixed(2) + "s"
+}
+
 function JUEGO(){
 
     function Tiempo_Disminur(){ //FUNCION QUE REDUCE EL TIEMPO Y RESETEAL EL RESULTADO UNA VEZ LLEGUE A 0
@@ -117,6 +122,7 @@ function JUEGO(){
         //FUNCION QUE UNICAMENTE AUMENTA PUNTOS Y RESETEA LAS VARIABLES AL LLEGAR A CIERTO LIMITE
         function Aumentar_Puntos(){
             Puntaje++;
+            if(window.registrarPuntajeNivel){window.registrarPuntajeNivel(1, Puntaje)}
             document.getElementById("Puntaje").innerHTML = Puntaje + "&nbsp;/&nbsp;15"
             var SpanPuntaje = document.getElementById("Puntaje")
             SpanPuntaje.classList.remove("Puntaje_Pop")
@@ -293,8 +299,8 @@ function JUEGO(){
                 Puntaje = 0 }
         
             else {
-                document.getElementById("Meteiorito").style.transition = "2.4s"
-                document.getElementById("Meteiorito2").style.transition = "2.4s"} }
+                document.getElementById("Meteiorito").style.transition = Duracion_Meteoritos_Nivel1()
+                document.getElementById("Meteiorito2").style.transition = Duracion_Meteoritos_Nivel1()} }
 
         Chequeo_Perdiste = setInterval(perdiste, 1)
         }
@@ -495,8 +501,8 @@ function JUEGO(){
                                 Puntaje = 0 }
 
                             else {
-                                document.getElementById("Meteiorito").style.transition = "2.4s"
-                                document.getElementById("Meteiorito2").style.transition = "2.4s"} }
+                                document.getElementById("Meteiorito").style.transition = Duracion_Meteoritos_Nivel1()
+                                document.getElementById("Meteiorito2").style.transition = Duracion_Meteoritos_Nivel1()} }
 
                         Chequeo_Perdiste = setInterval(perdiste, 1)    
 

@@ -173,7 +173,9 @@ class JuegoNivel3 {
                     const altura = Math.round(Math.random() * 380);
                     meteorito.style.left = "80%";
                     meteorito.style.top = `${altura}px`;
-                    meteorito.style.transition = "1.9s linear";
+                    const progreso = Math.min(this.puntaje / this.PUNTAJE_OBJETIVO, 1);
+                    const duracion = Math.max(1, 1.9 - progreso * 0.75);
+                    meteorito.style.transition = `${duracion.toFixed(2)}s linear`;
                 }
             };
             setTimeout(mover, 500 * (i + 1));
@@ -193,6 +195,7 @@ class JuegoNivel3 {
         meteorito.style.top = `${alturaAleatoria}px`;
 
         this.puntaje++;
+        if (window.registrarPuntajeNivel) window.registrarPuntajeNivel(3, this.puntaje);
         this.actualizarHUD();
         this.animarPuntaje(meteorito);
 
@@ -319,6 +322,7 @@ class JuegoNivel3 {
     procesarDerrota(mensaje) {
         this.activo = false;
         this.limpiarIntervalos();
+        if (window.efectoDerrotaNivel) window.efectoDerrotaNivel(3);
 
         if (this.dom.audios.fondo) this.dom.audios.fondo.pause();
         this.reproducirAudio(this.dom.audios.perdiste);

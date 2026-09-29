@@ -919,3 +919,131 @@ margin-left: 12%; }
     padding: 14px 28px; font-size: 14px; font-family: 'Press Start 2P', cursive;}
 .Reintentarlvl2:hover {background: rgb(60, 150, 255);}
 
+/* Efectos y controles compartidos entre niveles */
+.RecordCompartido {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex: 0 0 14%;
+    height: 70%;
+    color: #111;
+    font-size: 13px;
+    line-height: 1vh;
+}
+
+.RecordCompartido h3 { margin: 0 0 8px; }
+.RecordCompartido span { font-size: 16px; }
+
+#NIVEL_01 .Cabezera .Pause,
+.Cabezeralvl2 .Pauselvl2,
+.Cabezeralvl3 .Pauselvl3 {
+    left: auto;
+    margin-left: auto;
+}
+
+.ControlEnPausaCompartido { background: #ff8800 !important; }
+.Meteoritolvl3.AnimacionCompartidaPausada,
+.Meteioritolvl2.AnimacionCompartidaPausada,
+.Meteiorito.AnimacionCompartidaPausada { animation-play-state: paused; }
+
+.AyudaNivelCompartida {
+    position: absolute;
+    bottom: 5%;
+    left: 4%;
+    width: 92%;
+    color: #eaf2ff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px;
+    line-height: 22px;
+    text-shadow: 0 2px 4px #000;
+    pointer-events: none;
+}
+
+.PuntajeUnificadoPop {
+    animation: PuntajeUnificadoPopAnim .35s ease-out;
+}
+
+@keyframes PuntajeUnificadoPopAnim {
+    0% { transform: scale(1); color: #fff; }
+    40% { transform: scale(1.55); color: #ffd700; }
+    100% { transform: scale(1); color: #fff; }
+}
+
+.PuntajeUnificadoBrillo {
+    animation: PuntajeUnificadoBrilloAnim .45s ease-out;
+}
+
+.Puntaje span, .Puntajelvl3 span { display: inline-block; }
+
+@keyframes PuntajeUnificadoBrilloAnim {
+    40% { color: #ffd700; text-shadow: 0 0 12px #ffd700, 0 0 24px #ff9900; }
+}
+
+.TiempoUrgenteCompartido {
+    color: #ff2222 !important;
+    animation: TiempoUrgenteCompartidoAnim .6s ease-in-out infinite alternate;
+}
+
+@keyframes TiempoUrgenteCompartidoAnim {
+    to { opacity: .55; transform: scale(1.18); }
+}
+
+.Meteioritolvl2 {
+    user-select: none;
+    -webkit-user-drag: none;
+    animation: girarMeteorolvl2 1.2s linear infinite, fuegoMeteorolvl2 .55s ease-in-out infinite alternate;
+}
+
+@keyframes fuegoMeteorolvl2 {
+    from { filter: drop-shadow(0 0 4px #ff4500) drop-shadow(0 0 8px #ff8800); }
+    to { filter: drop-shadow(0 0 10px #ff6600) drop-shadow(0 0 22px #ffaa00); }
+}
+
+.Meteioritolvl2.AnimacionCompartidaPausada { animation-play-state: paused; }
+.Puntajelvl2 span.Poplvl2 { color: #ffd700; text-shadow: 0 0 10px #ffae00; }
+
+.DestelloCompartido {
+    position: absolute;
+    z-index: 1500;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(circle, #fff7cc 0%, #ffcc00 35%, #ff6600 65%, transparent 75%);
+    transform: translate(-50%, -50%) scale(.3);
+    animation: DestelloCompartidoPop .4s ease-out forwards;
+}
+
+.Limite.PeligroCompartido,
+.Limitelvl3.PeligroCompartido {
+    border-left-color: #ff2d2d;
+    animation: parpadeoPeligroCompartido .3s ease-in-out infinite alternate;
+}
+
+@keyframes parpadeoPeligroCompartido {
+    to { filter: drop-shadow(0 0 10px red); }
+}
+
+.ImpactoCompartido { animation: temblorImpactoCompartido .5s; }
+
+@keyframes temblorImpactoCompartido {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-8px, 4px); }
+    40% { transform: translate(8px, -4px); }
+    60% { transform: translate(-6px, 3px); }
+    80% { transform: translate(6px, -3px); }
+}
+
+@keyframes DestelloCompartidoPop {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(.3); }
+    60% { opacity: .9; transform: translate(-50%, -50%) scale(1.4); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.8); }
+}
+
+@media (max-width: 700px) {
+    .AyudaNivelCompartida { font-size: 8px; line-height: 16px; }
+    .RecordCompartido { font-size: 9px; flex-basis: 16%; }
+    .RecordCompartido span { font-size: 12px; }
+}
+

@@ -129,6 +129,7 @@
         if (estado !== "jugando" || m.estado !== "vuela") return; // un meteorito solo da 1 punto
         m.estado = "desviado";
         m.dy = (Math.random() * 2 - 1) * 160;
+        if (window.destelloImpactoNivel2) window.destelloImpactoNivel2(m.el);
         reproducir($(m.sonido));
         puntos++;
         textoFlotante(m.x + 20, m.y, "+1");
@@ -374,7 +375,7 @@
         $("Pistalvl2").innerHTML =
             "Pasa el cursor sobre los meteoritos para desviarlos.<br>" +
             "Meta: " + META_PUNTOS + " puntos en " + TIEMPO_TOTAL + " segundos.<br>" +
-            "Tecla P = pausa";
+            "Botón o tecla P = pausar / reanudar";
         $("Tiempolvl2").textContent = TIEMPO_TOTAL;
         mostrarPuntos();
         leerRecord();
